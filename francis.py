@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 ﻿# Francis - Deadline Assistant
 # Python version for PC
+=======
+# Francis - Deadline Assistant
+# Python version for Termux
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
 
 import csv
 import os
 from datetime import datetime
 import time
+<<<<<<< HEAD
 import subprocess
+=======
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
 
 # Configuration
 EVENTS_FILE = "francis_events.csv"
@@ -33,7 +41,11 @@ TEXTS = {
 }
 
 def clear_screen():
+<<<<<<< HEAD
     os.system('cls' if os.name == 'nt' else 'clear')
+=======
+    os.system('clear')
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
 
 def get_days_left(event_date):
     today = datetime.today().date()
@@ -69,7 +81,11 @@ def show_events():
     today = datetime.today().strftime("%Y-%m-%d")
     
     print(f"\n{TEXTS['title']}")
+<<<<<<< HEAD
     print("=" * 40)
+=======
+    print("========================")
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
     
     # Today's events
     today_events = [event for event in events if event['Date'] == today]
@@ -86,8 +102,12 @@ def show_events():
         print(f"\n{TEXTS['upcoming_events']}:")
         for i, event in enumerate(upcoming_events, 1):
             days_left = get_days_left(event['Date'])
+<<<<<<< HEAD
             event_type_display = TEXTS.get(event['Type'].lower(), event['Type'])
             print(f" {i}. {event_type_display}: {event['Name']} - {event['Date']} ({days_left} {TEXTS['days_left']})")
+=======
+            print(f" {i}. {event['Type']}: {event['Name']} - {event['Date']} ({days_left} {TEXTS['days_left']})")
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
     
     if not today_events and not upcoming_events:
         print(f"\n{TEXTS['no_events']}")
@@ -97,6 +117,7 @@ def show_events():
 def sync_with_github():
     """Sincroniza automáticamente con GitHub"""
     try:
+<<<<<<< HEAD
         # Detectar la rama actual
         branch_result = subprocess.run(["git", "branch", "--show-current"], 
                                      capture_output=True, text=True)
@@ -126,28 +147,80 @@ def sync_with_github():
         print(f"✗ Synchronization error: {str(e)}")
         return False
 
+=======
+        # Detectar automáticamente la rama actual
+        current_branch = os.popen('git symbolic-ref --short HEAD 2>/dev/null').read().strip()
+        
+        if not current_branch:
+            print("✗ No se pudo detectar la rama actual")
+            return False
+        
+        # Agregar todos los cambios
+        os.system("git add .")
+        
+        # Hacer commit con marca de tiempo
+        commit_message = f"Auto-sync: {time.strftime('%Y-%m-%d %H:%M:%S')}"
+        os.system(f'git commit -m "{commit_message}"')
+        
+        # Intentar hacer push a la rama actual
+        push_result = os.system(f"git push origin {current_branch}")
+        
+        if push_result == 0:
+            print("✓ Changes synchronized with GitHub")
+            return True
+        else:
+            print("✗ Error with current branch, trying alternatives...")
+            
+            # Intentar con ramas alternativas
+            for branch in ['main', 'master']:
+                if branch != current_branch:
+                    push_result = os.system(f"git push origin {branch}")
+                    if push_result == 0:
+                        print(f"✓ Changes synchronized to {branch} branch")
+                        # Cambiar a esta rama para futuras operaciones
+                        os.system(f"git branch -M {branch}")
+                        return True
+            
+            print("✗ All synchronization attempts failed")
+            return False
+            
+    except Exception as e:
+        print(f"✗ Synchronization error: {str(e)}")
+        return False
+ 
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
 def add_event():
     print(f"\n{TEXTS['add_event']}")
     
     # Event type
     type_input = input(TEXTS['event_type'])
+<<<<<<< HEAD
     event_type = ""
+=======
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
     if type_input == "1":
         event_type = "University"
     elif type_input == "2":
         event_type = "Music"
     elif type_input == "3":
         event_type = "Work"
+<<<<<<< HEAD
     elif type_input == "4":
+=======
+    elif type_input == "4":  # Nueva opción para Rest
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
         event_type = "Rest"
     else:
         event_type = type_input
     
     # Event name
     name = input(TEXTS['event_name'])
+<<<<<<< HEAD
     if not name.strip():
         print("Event name cannot be empty.")
         return
+=======
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
     
     # Event date
     date = input(TEXTS['event_date'])
@@ -155,7 +228,11 @@ def add_event():
     # Validate date
     try:
         datetime.strptime(date, "%Y-%m-%d")
+<<<<<<< HEAD
     except ValueError:
+=======
+    except:
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
         print("Invalid date format. Use YYYY-MM-DD.")
         return
     
@@ -166,10 +243,17 @@ def add_event():
     
     if save_events(events):
         print("Event added successfully!")
+<<<<<<< HEAD
         sync_with_github()
     else:
         print("Failed to add event.")
 
+=======
+        # Sincronización automática con GitHub
+        sync_with_github()
+    else:
+        print("Failed to add event.")    
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
 def delete_event():
     events = load_events()
     today = datetime.today().strftime("%Y-%m-%d")
@@ -183,13 +267,21 @@ def delete_event():
     print(f"\n{TEXTS['select_event']}")
     for i, event in enumerate(upcoming_events, 1):
         days_left = get_days_left(event['Date'])
+<<<<<<< HEAD
         event_type_display = TEXTS.get(event['Type'].lower(), event['Type'])
         print(f" {i}. {event_type_display}: {event['Name']} - {event['Date']} ({days_left} {TEXTS['days_left']})")
+=======
+        print(f" {i}. {event['Type']}: {event['Name']} - {event['Date']} ({days_left} {TEXTS['days_left']})")
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
     
     selection = input("\nEnter the event number to delete (0 to cancel): ")
     try:
         index = int(selection) - 1
+<<<<<<< HEAD
     except ValueError:
+=======
+    except:
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
         print("Invalid selection.")
         return
     
@@ -206,6 +298,10 @@ def delete_event():
         
         if save_events(events):
             print("Event deleted successfully!")
+<<<<<<< HEAD
+=======
+            # Sincronización automática con GitHub
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
             sync_with_github()
         else:
             print("Failed to delete event.")
@@ -215,7 +311,11 @@ def delete_event():
 def main():
     # Create events file if it doesn't exist
     if not os.path.exists(EVENTS_FILE):
+<<<<<<< HEAD
         with open(EVENTS_FILE, 'w', newline='', encoding='utf-8') as file:
+=======
+        with open(EVENTS_FILE, 'w', newline='') as file:
+>>>>>>> 522d41617b3fc81bad51ea8fdce1d04b000e0fc4
             writer = csv.writer(file)
             writer.writerow(['Type', 'Name', 'Date'])
     
