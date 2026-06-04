@@ -22,3 +22,10 @@ Currently building toward a role as a NOC technician. Everything in this portfol
 - OS: Kali Linux
 - Focus: Network monitoring, fault diagnosis, traffic analysis
 - Tools: Nmap, Wireshark, tcpdump, Netcat, Bettercap
+
+## Languages
+
+- Spanish — C2 (native)
+- English — C1
+- French — C1
+- Russian — C1
