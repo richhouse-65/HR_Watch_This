@@ -1,30 +1,31 @@
 # Nmap
 
-I started using Nmap when I first got into cybersecurity, and it stuck with me even after I shifted focus entirely to networking. It was one of the first tools that made networks feel tangible — you run a scan and suddenly you can see what's alive, what's listening, what's exposed.
-
-I use it mostly for three things: figuring out what devices are on a network, checking which ports are open on a specific host, and verifying whether a service is actually running where it should be. In a NOC context that last one matters a lot — if a monitoring alert fires, Nmap is often the first thing I reach for to confirm whether a port is genuinely down or just misbehaving.
+One of the first tools I picked up and still one I reach for constantly. I use it to map what is on a network, confirm what services are running, and verify that hosts are behaving as expected. In a NOC context that means less "let me explore" and more "something fired an alert, let me confirm what is actually up and listening."
 
 ## How I use it
 
-\`\`\`bash
-# Quick sweep to see what's alive on a subnet
+```bash
+# Sweep a subnet to see what hosts are alive
 nmap -sn 192.168.1.0/24
 
-# Check what ports are open on a host
+# Full port scan on a specific host
 nmap -p- 192.168.1.1
 
-# Find out what services and versions are running
+# Service and version detection
 nmap -sV 192.168.1.1
 
-# Full picture: OS, versions, scripts
+# OS detection, versions, scripts, traceroute
 nmap -A 192.168.1.1
 
-# Save results for documentation
+# Save output for documentation or comparison
 nmap -sV 192.168.1.0/24 -oN scan.txt
-\`\`\`
 
-## Where it fits in NOC work
+# Fast scan with timing optimization
+nmap -T4 -sV 192.168.1.0/24
+```
 
-When something breaks on a network, the first question is usually "is the host reachable and is the service up?" Nmap answers both fast. It also helps with baselining — knowing what *should* be open so you notice when something unexpected shows up.
+## How it fits into my workflow
 
-I've also used it on WiFi networks and against web-facing hosts to understand their exposure, which gave me a practical sense of what attackers see before a NOC team does.
+When an alert comes in, the first thing I verify is whether the host is reachable and whether the expected ports are open. Nmap answers both in seconds. I also use it for baselining — running scheduled scans and comparing results to catch unauthorized services or unexpected changes in the network topology.
+
+I have used it across WiFi networks, local subnets, and web-facing hosts, which gave me a solid practical sense of what normal looks like and what stands out.
